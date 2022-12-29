@@ -20,23 +20,22 @@ def movies(df, all_movie = False, **contain):
         print(movies)
     
     else:
-        movies=df[df['title'].str.contains(f"{contain['intitle']}", case=False)]["title"]
+        movies = df[df['title'].str.contains(f"{contain['intitle']}", case = False)]["title"]
         print(movies)
         
     return movies
 
 movies(mdatadf, intitle = "hateful")
 #or
-movies(mdatadf,all_movie=True)
+movies(mdatadf, all_movie=True)
 
 
 
-def content_based(df,movie):
+def content_based(df, movie):
     # =============================================================================
     # TF-IDF matrix
-    # =============================================================================
-    df = df[:10000] #optional your  
-    tfidf = TfidfVectorizer(stop_words="english")
+    # ============================================================================= 
+    tfidf = TfidfVectorizer(stop_words = "english")
     df["overview"] = df["overview"].fillna("") 
     tfidf_matrix = tfidf.fit_transform(df["overview"])
     matrix = tfidf_matrix.toarray()
@@ -45,17 +44,17 @@ def content_based(df,movie):
     # cosine similiarity & recommendation
     # =============================================================================
     
-    cosine_sim = cosine_similarity(matrix,matrix)
+    cosine_sim = cosine_similarity(matrix, matrix)
     indices = pd.Series(df.index, index = df["title"])
-    indices = indices[~indices.index.duplicated(keep="last")]
+    indices = indices[~indices.index.duplicated(keep = "last")]
     movie_index = indices[movie]
-    similarity_scores = pd.DataFrame(cosine_sim[movie_index],columns = ["score"])
-    movie_indices = similarity_scores.sort_values("score",ascending = False)[1:11].index #optional
+    similarity_scores = pd.DataFrame(cosine_sim[movie_index], columns = ["score"])
+    movie_indices = similarity_scores.sort_values("score", ascending = False)[1:11].index #optional
     recommended_movies = df["title"].loc[movie_indices]
     print(f"=={movie}==\n\n{recommended_movies}")
     return recommended_movies
 
-content_based(mdatadf,"The Hateful Eight")
+content_based(mdatadf, "The Hateful Eight")
 
 
 

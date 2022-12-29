@@ -8,8 +8,6 @@ moviedata = pd.read_csv("datasets/movie_metadata.csv")
 #https://www.kaggle.com/datasets/rounakbanik/the-movies-dataset
 mdatadf = moviedata.copy()
 
-
-
 # =============================================================================
 # Movie searching function
 # =============================================================================

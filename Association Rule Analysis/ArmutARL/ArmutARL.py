@@ -8,6 +8,14 @@ pd.set_options('display.max_rows',50)
 df = pd.read_csv('armut_data.csv')
 df.info()
 
+# 0   UserId      162523 non-null  int64
+# 1   ServiceId   162523 non-null  int64
+# 2   CategoryId  162523 non-null  int64
+# 3   CreateDate  162523 non-null  object
+#dtypes: int64(3), object(1)
+#memory usage: 5.0+ MB
+
+
 #UserId: Müşteri numarası
 
 #ServiceId:
@@ -20,6 +28,12 @@ df.info()
 #CreateDate: Hizmetin satın alındığı tarih
 
 df.head()
+#   UserId  ServiceId  CategoryId           CreateDate
+#0   25446          4           5  2017-08-06 16:11:00
+#1   22948         48           5  2017-08-06 16:12:00
+#2   10618          0           8  2017-08-06 16:13:00
+#3    7256          9           4  2017-08-06 16:14:00
+#4   25446         48           5  2017-08-06 16:16:00
 
 df["Hizmet"] = [f"{i}_{j}" for i,j in zip(df["ServiceId"],df["CategoryId"])]
 df["Tarih"] = pd.to_datetime(df["CreateDate"]).dt.strftime("%Y-%m")
@@ -46,6 +60,11 @@ def arl_recommender(rules_df, product_id, rec_count=1):
                 recommendation_list.append(list(sorted_rules.iloc[i]["consequents"]))
     recommendation_list = list({item for item_list in recommendation_list for item in item_list})
     return recommendation_list[:rec_count]
+
 arl_recommender(rules, "2_0",2)
 
+#['9_4', '25_0']
+
 arl_recommender(rules,"2_0", 4)
+
+#['9_4', '25_0', '2_0', '15_1']
